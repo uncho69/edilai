@@ -1,6 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function HomePage() {
+  const [aiutoOpen, setAiutoOpen] = useState(false);
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#0c0c0c] text-zinc-100">
       {/* Subtle gradient + noise */}
@@ -13,23 +19,29 @@ export default function HomePage() {
       <div className="absolute inset-0 bg-gradient-to-b from-amber-950/10 via-transparent to-transparent" />
 
       <div className="relative mx-auto max-w-2xl px-6 py-20 sm:py-28">
-        <h1
-          className="text-[2.75rem] font-extrabold tracking-tight sm:text-6xl text-[#E0B420]"
-          style={{ fontFamily: "var(--font-syne)" }}
-        >
-          EDILIA
-        </h1>
-        <p className="mt-4 max-w-md text-xl font-medium leading-relaxed text-zinc-200 sm:text-2xl">
-          Trasformiamo quello che vuoi fare in una richiesta che le imprese capiscono.
-        </p>
-        <p className="mt-2 text-base text-zinc-500">
-          Gratuito. In pochi minuti.
-        </p>
+        <div className="max-w-md">
+          <div className="relative -ml-4 h-[3.25rem] w-full sm:h-[5rem] sm:-ml-5">
+            <Image
+              src="/ed-logo.png"
+              alt="EDILIA"
+              width={280}
+              height={96}
+              className="h-full w-auto max-w-full object-contain object-left"
+              priority
+            />
+          </div>
+          <p className="mt-4 text-xl font-medium leading-relaxed text-zinc-200 sm:text-2xl">
+            Trasformiamo quello che vuoi fare in una richiesta che le imprese capiscono.
+          </p>
+          <p className="mt-2 text-base text-zinc-500">
+            Gratuito. In pochi minuti.
+          </p>
+        </div>
 
-        <div className="mt-16 grid gap-5 sm:grid-cols-2">
+        <div className="mt-16 grid gap-5 sm:grid-cols-2 sm:items-stretch">
           <Link
             href="/cliente/nuova-richiesta"
-            className="group relative flex flex-col rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 transition-all duration-300 hover:border-amber-500/50 hover:bg-zinc-900 hover:shadow-[0_0_40px_-12px_rgba(245,158,11,0.25)]"
+            className="group relative flex min-h-[220px] flex-col rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 transition-all duration-300 hover:border-amber-500/50 hover:bg-zinc-900 hover:shadow-[0_0_40px_-12px_rgba(245,158,11,0.25)]"
           >
             <span className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-500">
               Sei un cliente?
@@ -37,18 +49,18 @@ export default function HomePage() {
             <span className="mt-3 text-xl font-semibold tracking-tight text-zinc-100 transition group-hover:text-amber-400">
               Fai la tua richiesta
             </span>
-            <span className="mt-2 text-sm leading-relaxed text-zinc-500">
+            <span className="mt-2 flex-1 text-sm leading-relaxed text-zinc-500">
               Descrivi cosa vuoi fare, completa il questionario e invia alle imprese.
             </span>
-            <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-amber-400">
+            <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#E0B420] transition group-hover:gap-3">
               Inizia
-              <span className="transition group-hover:translate-x-1">→</span>
+              <span className="transition group-hover:translate-x-0.5">→</span>
             </span>
           </Link>
 
           <Link
             href="/impresa/registrati"
-            className="group relative flex flex-col rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 transition-all duration-300 hover:border-amber-500/50 hover:bg-zinc-900 hover:shadow-[0_0_40px_-12px_rgba(245,158,11,0.25)]"
+            className="group relative flex min-h-[220px] flex-col rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 transition-all duration-300 hover:border-amber-500/50 hover:bg-zinc-900 hover:shadow-[0_0_40px_-12px_rgba(245,158,11,0.25)]"
           >
             <span className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-500">
               Sei un&apos;impresa?
@@ -56,27 +68,70 @@ export default function HomePage() {
             <span className="mt-3 text-xl font-semibold tracking-tight text-zinc-100 transition group-hover:text-amber-400">
               Registrati
             </span>
-            <span className="mt-2 text-sm leading-relaxed text-zinc-500">
-              Crea il tuo profilo, indica zona e categorie, ricevi richieste compatibili.
+            <span className="mt-2 flex-1 text-sm leading-relaxed text-zinc-500">
+              Crea il tuo profilo, indica zona e categorie, ricevi richieste compatibili e trova nuovi clienti.
             </span>
-            <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-amber-400">
+            <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#E0B420] transition group-hover:gap-3">
               Registrati
-              <span className="transition group-hover:translate-x-1">→</span>
+              <span className="transition group-hover:translate-x-0.5">→</span>
             </span>
           </Link>
         </div>
 
-        <p className="mt-14 text-xs text-zinc-600">
-          Stima preliminare, non preventivo. Nessun pagamento o contratto nell&apos;MVP.
-        </p>
-
-        <Link
-          href="/admin"
-          className="mt-4 inline-block text-xs text-zinc-600 underline underline-offset-2 transition hover:text-zinc-500"
+        <button
+          type="button"
+          onClick={() => setAiutoOpen(true)}
+          className="mt-14 inline-block text-sm text-[#E0B420] underline underline-offset-2 transition hover:text-amber-400"
         >
-          Admin
-        </Link>
+          Hai bisogno di aiuto?
+        </button>
       </div>
+
+      {/* Modale Aiuto */}
+      {aiutoOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70"
+          onClick={() => setAiutoOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Contatti"
+        >
+          <div
+            className="relative w-full max-w-md rounded-2xl border border-zinc-700 bg-zinc-900 p-8 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setAiutoOpen(false)}
+              className="absolute right-4 top-4 text-zinc-500 hover:text-zinc-300"
+              aria-label="Chiudi"
+            >
+              ✕
+            </button>
+            <p className="text-lg font-medium text-zinc-200">
+              Hai domande o ti serve una mano?
+            </p>
+            <p className="mt-3 text-zinc-400">
+              Scrivici pure: siamo qui per aiutarti.
+            </p>
+            <p className="mt-6">
+              <a
+                href="mailto:supporto@edilia.it"
+                className="font-medium text-[#E0B420] hover:underline"
+              >
+                supporto@edilia.it
+              </a>
+            </p>
+            <button
+              type="button"
+              onClick={() => setAiutoOpen(false)}
+              className="mt-8 w-full rounded-xl border border-zinc-600 py-3 text-sm font-medium text-zinc-300 hover:bg-zinc-800"
+            >
+              Chiudi
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
