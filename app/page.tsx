@@ -42,7 +42,37 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="flex min-h-screen">
+    <main className="flex min-h-screen flex-col">
+      {/* Header globale: logo a sinistra, Login a destra (visibile sopra le immagini su desktop) */}
+      <header className="flex w-full shrink-0 items-center justify-between border-b border-zinc-800/50 bg-[#0c0c0c] px-6 py-4 lg:absolute lg:left-0 lg:right-0 lg:z-20 lg:border-0 lg:bg-transparent">
+        <div className="relative -ml-2 h-[2.5rem] w-auto sm:h-[3rem] sm:-ml-4">
+          <Image
+            src="/ed-logo.png"
+            alt="EDILIA"
+            width={200}
+            height={64}
+            className="h-full w-auto object-contain object-left"
+            priority
+          />
+        </div>
+        <div className="flex items-center gap-6">
+          <Link
+            href="/come-funziona"
+            className="text-sm font-medium text-[#E0B420] underline-offset-2 transition hover:text-amber-400 hover:underline"
+          >
+            Come funziona
+          </Link>
+          <Link
+            href="/login"
+            className="text-sm font-medium text-[#E0B420] underline-offset-2 transition hover:text-amber-400 hover:underline"
+          >
+            Login
+          </Link>
+        </div>
+      </header>
+
+      {/* Contenuto: pannello sinistro + area banner */}
+      <div className="flex flex-1 pt-0 lg:pt-16">
       {/* Pannello sinistro: contenuto (stile WeTransfer) */}
       <div className="relative flex w-full flex-col bg-[#0c0c0c] text-zinc-100 lg:max-w-[480px] lg:shrink-0">
         <div
@@ -52,20 +82,6 @@ export default function HomePage() {
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-amber-950/10 via-transparent to-transparent" />
-
-        {/* Header: logo in cima alla pagina */}
-        <header className="relative shrink-0 border-b border-zinc-800/50 px-6 pt-5 pb-4">
-          <div className="relative -ml-4 h-[2.75rem] w-full sm:h-[3.5rem] sm:-ml-5">
-            <Image
-              src="/ed-logo.png"
-              alt="EDILIA"
-              width={280}
-              height={96}
-              className="h-full w-auto max-w-full object-contain object-left"
-              priority
-            />
-          </div>
-        </header>
 
         <div className="relative flex-1 overflow-y-auto px-6 py-8 sm:py-10">
           <div className="mx-auto max-w-md">
@@ -189,6 +205,7 @@ export default function HomePage() {
             <div className="absolute inset-0 bg-gradient-to-r from-[#0c0c0c]/40 via-transparent to-transparent" />
           </div>
         ))}
+      </div>
       </div>
 
       {/* Modale Aiuto */}
