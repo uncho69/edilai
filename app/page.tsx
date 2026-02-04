@@ -14,7 +14,7 @@ export default function HomePage() {
 
       <div className="relative mx-auto max-w-2xl px-6 py-20 sm:py-28">
         <h1
-          className="text-[2.75rem] font-extrabold tracking-tight sm:text-6xl"
+          className="text-[2.75rem] font-extrabold tracking-tight sm:text-6xl text-[#E0B420]"
           style={{ fontFamily: "var(--font-syne)" }}
         >
           EDILIA
