@@ -19,8 +19,11 @@ export default function HomePage() {
         >
           EDILIA
         </h1>
-        <p className="mt-4 max-w-md text-base leading-relaxed text-zinc-400">
-          Descrivi i lavori in parole tue, rispondi a poche domande, ottieni una scheda chiara e un range di costo.
+        <p className="mt-4 max-w-md text-xl font-medium leading-relaxed text-zinc-200 sm:text-2xl">
+          Trasformiamo quello che vuoi fare in una richiesta che le imprese capiscono.
+        </p>
+        <p className="mt-2 text-base text-zinc-500">
+          Gratuito. In pochi minuti.
         </p>
 
         <div className="mt-16 grid gap-5 sm:grid-cols-2">
@@ -44,7 +47,7 @@ export default function HomePage() {
           </Link>
 
           <Link
-            href="/impresa"
+            href="/impresa/registrati"
             className="group relative flex flex-col rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 transition-all duration-300 hover:border-amber-500/50 hover:bg-zinc-900 hover:shadow-[0_0_40px_-12px_rgba(245,158,11,0.25)]"
           >
             <span className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-500">

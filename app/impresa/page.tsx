@@ -103,6 +103,12 @@ export default function ImpresaPage() {
       <p className={subtitleClass}>
         Seleziona il tuo profilo e visualizza le richieste inviate.
       </p>
+      <p className="mt-2 text-sm text-zinc-500">
+        Non hai un profilo?{" "}
+        <Link href="/impresa/registrati" className="text-amber-400 hover:underline">
+          Registrati
+        </Link>
+      </p>
 
       {imprese.length > 0 && (
         <div className="mt-6">
