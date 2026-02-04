@@ -5,6 +5,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getDraft, clearDraft } from "@/lib/draft";
 import type { OutputAIGrezzo, DatiIntervista } from "@/types";
+import {
+  PageShell,
+  cardClass,
+  btnPrimaryClass,
+  btnSecondaryClass,
+  titleClass,
+  subtitleClass,
+} from "@/app/components/PageShell";
 
 export default function RiepilogoPage() {
   const router = useRouter();
@@ -73,9 +81,9 @@ export default function RiepilogoPage() {
 
   if (!draft) {
     return (
-      <main className="min-h-screen bg-zinc-50 p-6">
+      <PageShell>
         <p className="text-zinc-500">Caricamento...</p>
-      </main>
+      </PageShell>
     );
   }
 
@@ -95,72 +103,67 @@ export default function RiepilogoPage() {
     : [0, 0];
 
   return (
-    <main className="min-h-screen bg-zinc-50 text-zinc-900">
-      <div className="mx-auto max-w-2xl px-6 py-12">
-        <h1 className="text-2xl font-semibold">Riepilogo richiesta</h1>
-        <p className="mt-2 text-zinc-600">
-          Controlla i dati prima di inviare alle imprese.
-        </p>
+    <PageShell backHref="/cliente/nuova-richiesta/flow" backLabel="← Torna al questionario">
+      <h1 className={titleClass} style={{ fontFamily: "var(--font-syne)" }}>
+        Riepilogo richiesta
+      </h1>
+      <p className={subtitleClass}>
+        Controlla i dati prima di inviare alle imprese.
+      </p>
 
-        <div className="mt-8 space-y-6 rounded-lg border border-zinc-200 bg-white p-6">
-          <section>
-            <h2 className="text-sm font-medium text-zinc-500">La tua descrizione</h2>
-            <p className="mt-2 text-zinc-800">{draft.descrizioneIniziale}</p>
-            <p className="mt-1 text-xs text-zinc-500">Localizzazione: {draft.localizzazione}</p>
-          </section>
-          <section>
-            <h2 className="text-sm font-medium text-zinc-500">Lavorazioni previste</h2>
-            <ul className="mt-2 list-inside list-disc text-zinc-800">
-              {displayOutput.sottoLavorazioni?.length
-                ? displayOutput.sottoLavorazioni.map((s) => (
-                    <li key={s.codice}>{s.descrizione}</li>
-                  ))
-                : displayOutput.noteTecniche?.map((n, i) => <li key={i}>{n}</li>)}
-            </ul>
-          </section>
-          <section>
-            <h2 className="text-sm font-medium text-zinc-500">Range di costo stimato</h2>
-            <p className="mt-2 text-lg font-medium">
-              € {rangeTotale[0].toLocaleString("it-IT")} — € {rangeTotale[1].toLocaleString("it-IT")}
-            </p>
-            <p className="mt-1 text-xs text-zinc-500">Per le macro-aree indicate</p>
-          </section>
-          <section>
-            <h2 className="text-sm font-medium text-zinc-500">Note tecniche</h2>
-            <ul className="mt-2 list-inside list-disc text-sm text-zinc-700">
-              {(displayOutput.noteTecniche ?? []).map((n, i) => (
-                <li key={i}>{n}</li>
-              ))}
-            </ul>
-          </section>
+      <div className={`mt-8 space-y-6 ${cardClass}`}>
+        <section>
+          <h2 className="text-sm font-medium text-zinc-500">La tua descrizione</h2>
+          <p className="mt-2 text-zinc-200">{draft.descrizioneIniziale}</p>
+          <p className="mt-1 text-xs text-zinc-500">Localizzazione: {draft.localizzazione}</p>
+        </section>
+        <section>
+          <h2 className="text-sm font-medium text-zinc-500">Lavorazioni previste</h2>
+          <ul className="mt-2 list-inside list-disc text-zinc-300">
+            {displayOutput.sottoLavorazioni?.length
+              ? displayOutput.sottoLavorazioni.map((s) => (
+                  <li key={s.codice}>{s.descrizione}</li>
+                ))
+              : displayOutput.noteTecniche?.map((n, i) => <li key={i}>{n}</li>)}
+          </ul>
+        </section>
+        <section>
+          <h2 className="text-sm font-medium text-zinc-500">Range di costo stimato</h2>
+          <p className="mt-2 text-lg font-semibold text-amber-400">
+            € {rangeTotale[0].toLocaleString("it-IT")} — € {rangeTotale[1].toLocaleString("it-IT")}
+          </p>
+          <p className="mt-1 text-xs text-zinc-500">Per le macro-aree indicate</p>
+        </section>
+        <section>
+          <h2 className="text-sm font-medium text-zinc-500">Note tecniche</h2>
+          <ul className="mt-2 list-inside list-disc text-sm text-zinc-400">
+            {(displayOutput.noteTecniche ?? []).map((n, i) => (
+              <li key={i}>{n}</li>
+            ))}
+          </ul>
+        </section>
 
-          <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-            <strong>Disclaimer:</strong> Questa è una stima preliminare, non un preventivo. I costi
-            effettivi potranno essere definiti solo dopo un sopralluogo e una valutazione tecnica.
-          </div>
-        </div>
-
-        {errore && (
-          <p className="mt-4 text-sm text-red-600">{errore}</p>
-        )}
-
-        <div className="mt-8 flex gap-4">
-          <button
-            type="button"
-            onClick={handleConfermaInvia}
-            disabled={invio || !output}
-            className="rounded-lg bg-zinc-900 px-6 py-3 font-medium text-white transition hover:bg-zinc-800 disabled:opacity-50"
-          >
-            {invio ? "Invio in corso..." : "Conferma e invia richiesta"}
-          </button>
-          <Link
-            href="/cliente/nuova-richiesta/flow"
-            className="rounded-lg border border-zinc-300 px-6 py-3 font-medium text-zinc-700 hover:bg-zinc-100"
-          >
-            Torna indietro e modifica
-          </Link>
+        <div className="rounded-xl border border-amber-500/30 bg-amber-950/20 p-4 text-sm text-amber-200">
+          <strong>Disclaimer:</strong> Questa è una stima preliminare, non un preventivo. I costi
+          effettivi potranno essere definiti solo dopo un sopralluogo e una valutazione tecnica.
         </div>
       </div>
-    </main>
+
+      {errore && <p className="mt-4 text-sm text-amber-400">{errore}</p>}
+
+      <div className="mt-8 flex flex-wrap gap-4">
+        <button
+          type="button"
+          onClick={handleConfermaInvia}
+          disabled={invio || !output}
+          className={`${btnPrimaryClass}`}
+        >
+          {invio ? "Invio in corso..." : "Conferma e invia richiesta"}
+        </button>
+        <Link href="/cliente/nuova-richiesta/flow" className={btnSecondaryClass}>
+          Torna indietro e modifica
+        </Link>
+      </div>
+    </PageShell>
   );
 }

@@ -3,21 +3,17 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getDraft, setDraft } from "@/lib/draft";
+import {
+  PageShell,
+  inputClass,
+  labelClass,
+  btnPrimaryClass,
+  btnSecondaryClass,
+} from "@/app/components/PageShell";
 
-/** Domande del flow guidato (hard-coded + in futuro AI). Step minimi per MVP. */
 const STEPS = [
-  {
-    id: "ambienti",
-    title: "Quali ambienti sono coinvolti?",
-    type: "text",
-    placeholder: "Es. soggiorno, bagno, camera...",
-  },
-  {
-    id: "metratura",
-    title: "Metratura approssimativa (mq)?",
-    type: "range",
-    hint: "Indica un range, non serve precisione.",
-  },
+  { id: "ambienti", title: "Quali ambienti sono coinvolti?", type: "text", placeholder: "Es. soggiorno, bagno, camera..." },
+  { id: "metratura", title: "Metratura approssimativa (mq)?", type: "range", hint: "Indica un range, non serve precisione." },
   {
     id: "stato",
     title: "Stato attuale",
@@ -66,96 +62,71 @@ export default function FlowPage() {
   };
 
   return (
-    <main className="min-h-screen bg-zinc-50 text-zinc-900">
-      <div className="mx-auto max-w-2xl px-6 py-12">
-        <Link
-          href="/cliente/nuova-richiesta"
-          className="text-sm text-zinc-500 hover:underline"
-        >
-          ← Torna alla descrizione
-        </Link>
+    <PageShell backHref="/cliente/nuova-richiesta" backLabel="← Torna alla descrizione">
+      <span className="text-sm text-zinc-500">
+        Domanda {stepIndex + 1} di {STEPS.length}
+      </span>
+      <h2 className="mt-2 text-xl font-semibold tracking-tight text-zinc-100" style={{ fontFamily: "var(--font-syne)" }}>
+        {step.title}
+      </h2>
 
-        <div className="mt-6">
-          <span className="text-sm text-zinc-500">
-            Domanda {stepIndex + 1} di {STEPS.length}
-          </span>
-          <h2 className="mt-2 text-xl font-semibold">{step.title}</h2>
-
-          <div className="mt-6">
-            {step.type === "text" && (
+      <div className="mt-6">
+        {step.type === "text" && (
+          <input
+            type="text"
+            className={inputClass}
+            placeholder={step.placeholder}
+            value={answers[step.id] ?? ""}
+            onChange={(e) => setAnswers((a) => ({ ...a, [step.id]: e.target.value }))}
+          />
+        )}
+        {step.type === "select" && (
+          <select
+            className={inputClass}
+            value={answers[step.id] ?? ""}
+            onChange={(e) => setAnswers((a) => ({ ...a, [step.id]: e.target.value }))}
+          >
+            <option value="">Seleziona...</option>
+            {step.options?.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+        )}
+        {step.type === "range" && (
+          <div>
+            <p className="text-sm text-zinc-500">{step.hint}</p>
+            <div className="mt-2 flex gap-4">
               <input
-                type="text"
-                className="w-full rounded-lg border border-zinc-300 px-4 py-3"
-                placeholder={step.placeholder}
-                value={answers[step.id] ?? ""}
-                onChange={(e) =>
-                  setAnswers((a) => ({ ...a, [step.id]: e.target.value }))
-                }
+                type="number"
+                placeholder="Min mq"
+                className={inputClass}
+                value={answers[`${step.id}_min`] ?? ""}
+                onChange={(e) => setAnswers((a) => ({ ...a, [`${step.id}_min`]: e.target.value }))}
               />
-            )}
-            {step.type === "select" && (
-              <select
-                className="w-full rounded-lg border border-zinc-300 px-4 py-3"
-                value={answers[step.id] ?? ""}
-                onChange={(e) =>
-                  setAnswers((a) => ({ ...a, [step.id]: e.target.value }))
-                }
-              >
-                <option value="">Seleziona...</option>
-                {step.options?.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {o.label}
-                  </option>
-                ))}
-              </select>
-            )}
-            {step.type === "range" && (
-              <div>
-                <p className="text-sm text-zinc-500">{step.hint}</p>
-                <div className="mt-2 flex gap-4">
-                  <input
-                    type="number"
-                    placeholder="Min mq"
-                    className="w-full rounded-lg border border-zinc-300 px-4 py-3"
-                    value={answers[`${step.id}_min`] ?? ""}
-                    onChange={(e) =>
-                      setAnswers((a) => ({ ...a, [`${step.id}_min`]: e.target.value }))
-                    }
-                  />
-                  <input
-                    type="number"
-                    placeholder="Max mq"
-                    className="w-full rounded-lg border border-zinc-300 px-4 py-3"
-                    value={answers[`${step.id}_max`] ?? ""}
-                    onChange={(e) =>
-                      setAnswers((a) => ({ ...a, [`${step.id}_max`]: e.target.value }))
-                    }
-                  />
-                </div>
-              </div>
-            )}
+              <input
+                type="number"
+                placeholder="Max mq"
+                className={inputClass}
+                value={answers[`${step.id}_max`] ?? ""}
+                onChange={(e) => setAnswers((a) => ({ ...a, [`${step.id}_max`]: e.target.value }))}
+              />
+            </div>
           </div>
-
-          <div className="mt-10 flex gap-4">
-            {stepIndex > 0 && (
-              <button
-                type="button"
-                onClick={handleBack}
-                className="rounded-lg border border-zinc-300 px-6 py-3 font-medium text-zinc-700 hover:bg-zinc-100"
-              >
-                Indietro
-              </button>
-            )}
-            <button
-              type="button"
-              onClick={handleNext}
-              className="rounded-lg bg-zinc-900 px-6 py-3 font-medium text-white hover:bg-zinc-800"
-            >
-              {isLast ? "Vedi riepilogo" : "Avanti"}
-            </button>
-          </div>
-        </div>
+        )}
       </div>
-    </main>
+
+      <div className="mt-10 flex flex-wrap gap-4">
+        {stepIndex > 0 && (
+          <button type="button" onClick={handleBack} className={btnSecondaryClass}>
+            Indietro
+          </button>
+        )}
+        <button type="button" onClick={handleNext} className={btnPrimaryClass}>
+          {isLast ? "Vedi riepilogo" : "Avanti"}
+        </button>
+      </div>
+    </PageShell>
   );
 }

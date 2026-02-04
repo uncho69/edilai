@@ -19,7 +19,7 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  title: "EDIL-AI — Struttura la tua richiesta di lavori",
+  title: "EDILIA — Struttura la tua richiesta di lavori",
   description:
     "Descrivi cosa vuoi fare in parole tue. Ti guidiamo passo passo fino a una scheda lavori chiara e a un range di costo stimato.",
 };

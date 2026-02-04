@@ -17,7 +17,7 @@ export default function HomePage() {
           className="text-[2.75rem] font-extrabold tracking-tight sm:text-6xl"
           style={{ fontFamily: "var(--font-syne)" }}
         >
-          EDIL-AI
+          EDILIA
         </h1>
         <p className="mt-4 max-w-md text-base leading-relaxed text-zinc-400">
           Descrivi i lavori in parole tue, rispondi a poche domande, ottieni una scheda chiara e un range di costo.

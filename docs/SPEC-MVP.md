@@ -1,4 +1,4 @@
-# EDIL-AI — Specifica MVP
+# EDILIA — Specifica MVP
 
 ## Messaggio chiave per il programmatore
 

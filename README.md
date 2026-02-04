@@ -1,4 +1,4 @@
-# EDIL-AI
+# EDILIA
 
 Piattaforma per **strutturare** la richiesta di lavori edili: l’utente descrive in linguaggio naturale, il sistema lo guida con domande mirate e produce una scheda lavori chiara (capitolato preliminare + range costi).  
 Nell’MVP non è un marketplace: niente pagamenti, contratti o rating. Solo strutturazione del bisogno e invio della richiesta a imprese selezionate.
