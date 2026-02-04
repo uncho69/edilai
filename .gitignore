@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+web/node_modules/
+
+# Next.js
+web/.next/
+web/out/
+
+# Build
+web/build/
+
+# Env (no token in repo)
+.env
+.env.*
+
+# OS
+.DS_Store
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+.vercel/
