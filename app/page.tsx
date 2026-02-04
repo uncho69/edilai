@@ -4,8 +4,25 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+type ComeFunzionaRuolo = "cliente" | "impresa";
+
+const COME_FUNZIONA_CLIENTE = [
+  "Descrivi in parole tue cosa vuoi fare (es. rifare il bagno, tinteggiare).",
+  "Rispondi a poche domande su ambienti, metrature e livello di finitura.",
+  "Ricevi una scheda lavori chiara e un range di costo stimato.",
+  "Invia la richiesta alle imprese della tua zona.",
+];
+
+const COME_FUNZIONA_IMPRESA = [
+  "Registrati e indica zona di intervento e categorie di lavoro.",
+  "Ricevi le richieste compatibili con il tuo profilo.",
+  "Per ogni richiesta: vedi scheda, budget e localizzazione.",
+  "Rispondi: interessato, richiedi sopralluogo o rifiuta.",
+];
+
 export default function HomePage() {
   const [aiutoOpen, setAiutoOpen] = useState(false);
+  const [comeFunzionaRuolo, setComeFunzionaRuolo] = useState<ComeFunzionaRuolo>("cliente");
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#0c0c0c] text-zinc-100">
@@ -77,6 +94,49 @@ export default function HomePage() {
             </span>
           </Link>
         </div>
+
+        {/* Come funziona */}
+        <section className="mt-20 max-w-md">
+          <h2 className="text-lg font-semibold tracking-tight text-zinc-200">
+            Come funziona
+          </h2>
+          <div className="mt-4 flex gap-2">
+            <button
+              type="button"
+              onClick={() => setComeFunzionaRuolo("cliente")}
+              className={`rounded-xl border px-4 py-2.5 text-sm font-medium transition ${
+                comeFunzionaRuolo === "cliente"
+                  ? "border-[#E0B420] bg-[#E0B420]/10 text-[#E0B420]"
+                  : "border-zinc-700 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300"
+              }`}
+            >
+              Cliente
+            </button>
+            <button
+              type="button"
+              onClick={() => setComeFunzionaRuolo("impresa")}
+              className={`rounded-xl border px-4 py-2.5 text-sm font-medium transition ${
+                comeFunzionaRuolo === "impresa"
+                  ? "border-[#E0B420] bg-[#E0B420]/10 text-[#E0B420]"
+                  : "border-zinc-700 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300"
+              }`}
+            >
+              Impresa
+            </button>
+          </div>
+          <ol className="mt-6 space-y-4 rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6">
+            {(comeFunzionaRuolo === "cliente" ? COME_FUNZIONA_CLIENTE : COME_FUNZIONA_IMPRESA).map(
+              (step, i) => (
+                <li key={i} className="flex gap-4 text-sm text-zinc-300">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#E0B420]/20 text-xs font-semibold text-[#E0B420]">
+                    {i + 1}
+                  </span>
+                  <span className="pt-0.5">{step}</span>
+                </li>
+              )
+            )}
+          </ol>
+        </section>
 
         <button
           type="button"
