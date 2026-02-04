@@ -53,19 +53,23 @@ export default function HomePage() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-amber-950/10 via-transparent to-transparent" />
 
-        <div className="relative overflow-y-auto px-6 py-12 sm:py-16 lg:py-20">
+        {/* Header: logo in cima alla pagina */}
+        <header className="relative shrink-0 border-b border-zinc-800/50 px-6 pt-5 pb-4">
+          <div className="relative -ml-4 h-[2.75rem] w-full sm:h-[3.5rem] sm:-ml-5">
+            <Image
+              src="/ed-logo.png"
+              alt="EDILIA"
+              width={280}
+              height={96}
+              className="h-full w-auto max-w-full object-contain object-left"
+              priority
+            />
+          </div>
+        </header>
+
+        <div className="relative flex-1 overflow-y-auto px-6 py-8 sm:py-10">
           <div className="mx-auto max-w-md">
-            <div className="relative -ml-4 h-[3.25rem] w-full sm:h-[5rem] sm:-ml-5">
-              <Image
-                src="/ed-logo.png"
-                alt="EDILIA"
-                width={280}
-                height={96}
-                className="h-full w-auto max-w-full object-contain object-left"
-                priority
-              />
-            </div>
-            <p className="mt-4 text-xl font-medium leading-relaxed text-zinc-200 sm:text-2xl">
+            <p className="text-xl font-medium leading-relaxed text-zinc-200 sm:text-2xl">
               Trasformiamo quello che vuoi fare in una richiesta che le imprese capiscono.
             </p>
             <p className="mt-2 text-base text-zinc-500">
