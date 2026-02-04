@@ -7,7 +7,6 @@ Nell’MVP non è un marketplace: niente pagamenti, contratti o rating. Solo str
 
 - **Next.js** (App Router) + **React** + **TypeScript**
 - **Tailwind CSS**
-- App in `web/`
 
 ## Documentazione
 
@@ -18,14 +17,13 @@ Nell’MVP non è un marketplace: niente pagamenti, contratti o rating. Solo str
 ## Avvio
 
 ```bash
-cd web
 npm install
 npm run dev
 ```
 
 Apri [http://localhost:3000](http://localhost:3000).
 
-## Struttura progetto (web)
+## Struttura
 
 - `app/` — Route: home, `/cliente`, `/cliente/nuova-richiesta`, flow, riepilogo, `/impresa`, `/admin`.
 - `app/api/classifica/` — API stub per classificazione richiesta (output AI); in produzione collegare LLM vincolato alla tassonomia.

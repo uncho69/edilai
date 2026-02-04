@@ -1,15 +1,14 @@
 # Dependencies
 node_modules/
-web/node_modules/
 
 # Next.js
-web/.next/
-web/out/
+.next/
+out/
 
 # Build
-web/build/
+build/
 
-# Env (no token in repo)
+# Env
 .env
 .env.*
 
@@ -24,3 +23,7 @@ web/build/
 # Logs
 *.log
 .vercel/
+
+# TypeScript
+next-env.d.ts
+*.tsbuildinfo
