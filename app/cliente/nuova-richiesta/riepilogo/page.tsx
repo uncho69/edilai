@@ -65,6 +65,7 @@ export default function RiepilogoPage() {
           localizzazione: draft.localizzazione || "Non indicata",
           descrizioneIniziale: draft.descrizioneIniziale,
           budgetMassimo: draft.budgetMassimo,
+          fotoUrls: draft.photoUrls ?? [],
           datiIntervista: buildDatiIntervista(),
           outputAIGrezzo: output,
           startedAt: draft.startedAt,

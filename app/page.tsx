@@ -8,7 +8,7 @@ type ComeFunzionaRuolo = "cliente" | "impresa";
 
 const COME_FUNZIONA_CLIENTE = [
   "Descrivi in parole tue cosa vuoi fare (es. rifare il bagno, tinteggiare).",
-  "Rispondi a poche domande su ambienti, metrature e livello di finitura.",
+  "Rispondi a poche domande su ambienti, metrature e stato dell'immobile.",
   "Ricevi una scheda lavori chiara e un range di costo stimato.",
   "Invia la richiesta alle imprese della tua zona.",
 ];
@@ -20,11 +20,26 @@ const COME_FUNZIONA_IMPRESA = [
   "Rispondi: interessato, richiedi sopralluogo o rifiuta.",
 ];
 
-/** Banner rotanti (sfondo area destra). Sostituire con URL sponsor quando pronto. */
-const BANNER_IMAGES = [
-  "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&q=80",
-  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80",
-  "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80",
+/** Slide del banner destro: ogni slide ha sfondo + messaggio su come funziona */
+const BANNER_SLIDES = [
+  {
+    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&q=80",
+    title: "Ristrutturare, senza il caos.",
+    subtitle:
+      "Descrivi il tuo progetto in libertà. Noi lo trasformiamo in una richiesta chiara e la inviamo alle imprese della tua zona.",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80",
+    title: "Dal progetto al preventivo in pochi minuti.",
+    subtitle:
+      "Rispondi a poche domande su ambienti e metrature. Ricevi una scheda lavori e un range di costo stimato prima di contattare nessuno.",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=80",
+    title: "Noi troviamo. Tu scegli.",
+    subtitle:
+      "Le imprese ricevono richieste già strutturate. Tu ricevi le risposte e decidi con chi andare avanti, senza intermediazioni inutili.",
+  },
 ];
 
 const BANNER_DURATION_MS = 6000;
@@ -36,7 +51,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const t = setInterval(() => {
-      setBannerIndex((i) => (i + 1) % BANNER_IMAGES.length);
+      setBannerIndex((i) => (i + 1) % BANNER_SLIDES.length);
     }, BANNER_DURATION_MS);
     return () => clearInterval(t);
   }, []);
@@ -185,11 +200,11 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Area destra: banner rotanti (spazio per sponsor / adv) */}
+      {/* Area destra: banner rotanti con messaggi su come funziona */}
       <div className="relative hidden min-h-screen flex-1 lg:block">
-        {BANNER_IMAGES.map((src, i) => (
+        {BANNER_SLIDES.map((slide, i) => (
           <div
-            key={src}
+            key={i}
             className="absolute inset-0 transition-opacity duration-700 ease-in-out"
             style={{
               opacity: i === bannerIndex ? 1 : 0,
@@ -197,12 +212,25 @@ export default function HomePage() {
             }}
           >
             <img
-              src={src}
+              src={slide.image}
               alt=""
               className="h-full w-full object-cover"
               role="presentation"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0c0c0c]/40 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0c0c0c]/50 via-[#0c0c0c]/40 to-[#0c0c0c]/50" />
+            <div className="absolute inset-0 flex items-center justify-center px-8 lg:px-16">
+              <div className="max-w-lg text-center">
+                <h2
+                  className="text-2xl font-semibold leading-tight text-white drop-shadow-lg lg:text-3xl"
+                  style={{ fontFamily: "var(--font-syne)" }}
+                >
+                  {slide.title}
+                </h2>
+                <p className="mt-3 text-base leading-relaxed text-zinc-300 drop-shadow-md lg:text-lg">
+                  {slide.subtitle}
+                </p>
+              </div>
+            </div>
           </div>
         ))}
       </div>

@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
       localizzazione,
       descrizioneIniziale,
       budgetMassimo,
+      fotoUrls,
       datiIntervista,
       outputAIGrezzo,
       startedAt,
@@ -28,6 +29,7 @@ export async function POST(request: NextRequest) {
       localizzazione: string;
       descrizioneIniziale: string;
       budgetMassimo?: number;
+      fotoUrls?: string[];
       datiIntervista?: DatiIntervista;
       outputAIGrezzo?: OutputAIGrezzo;
       startedAt?: string;
@@ -46,6 +48,7 @@ export async function POST(request: NextRequest) {
       localizzazione: localizzazione || "Non indicata",
       descrizioneIniziale,
       budgetMassimo,
+      fotoUrls: fotoUrls?.length ? fotoUrls : undefined,
       datiIntervista,
       outputAIGrezzo: outputAIGrezzo ?? undefined,
       outputPerUtente: outputAIGrezzo ?? undefined,

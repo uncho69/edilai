@@ -6,6 +6,8 @@ export interface DraftRichiesta {
   localizzazione: string;
   budgetMassimo?: number;
   fotoNote?: string;
+  /** URL delle foto (data URL base64 o URL dopo upload) */
+  photoUrls?: string[];
   startedAt: string;
   /** Risposte flow: ambienti, metratura_min, metratura_max, stato, finitura */
   answers: Record<string, string>;

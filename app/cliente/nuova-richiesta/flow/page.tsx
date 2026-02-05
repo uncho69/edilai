@@ -24,16 +24,6 @@ const STEPS = [
       { value: "da_demolire", label: "Da demolire / sgomberare" },
     ],
   },
-  {
-    id: "finitura",
-    title: "Livello di finitura desiderato",
-    type: "select",
-    options: [
-      { value: "base", label: "Base (economico, funzionale)" },
-      { value: "medio", label: "Medio" },
-      { value: "alto", label: "Alto (premium)" },
-    ],
-  },
 ];
 
 export default function FlowPage() {

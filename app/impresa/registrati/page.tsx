@@ -35,11 +35,11 @@ export default function RegistratiImpresaPage() {
           Richiesta inviata
         </h1>
         <p className={`mt-4 ${subtitleClass}`}>
-          Grazie per esserti registrato. Quando il backend sarà attivo riceverai una email di conferma e potrai accedere all&apos;area impresa per vedere le richieste.
+          Grazie per esserti registrato. Riceverai una email quando la tua impresa sarà stata accettata. Il pannello per gestire le richieste è riservato alle imprese che lavorano con noi.
         </p>
         <div className="mt-8 flex flex-wrap gap-4">
-          <Link href="/impresa" className={btnPrimaryClass}>
-            Vai all&apos;area impresa (demo)
+          <Link href="/impresa/login" className={btnPrimaryClass}>
+            Accedi al pannello (solo imprese abilitate)
           </Link>
           <Link href="/" className={btnSecondaryClass}>
             Torna alla home
