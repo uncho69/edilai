@@ -6,18 +6,35 @@ import Image from "next/image";
 
 type ComeFunzionaRuolo = "cliente" | "impresa";
 
-const COME_FUNZIONA_CLIENTE = [
-  "Descrivi in parole tue cosa vuoi fare (es. rifare il bagno, tinteggiare).",
-  "Rispondi a poche domande su ambienti, metrature e stato dell'immobile.",
-  "Ricevi una scheda lavori chiara e un range di costo stimato.",
-  "Invia la richiesta alle imprese della tua zona.",
+/** 3 step per Come funziona (layout a card orizzontali) */
+const COME_FUNZIONA_CLIENTE_STEPS = [
+  {
+    title: "Cerca un'impresa adatta a te",
+    desc: "Seleziona il servizio desiderato e compila un breve form o rispondi alle domande inerenti.",
+  },
+  {
+    title: "Ricevi scheda e preventivo stimato",
+    desc: "La tua richiesta viene strutturata in una scheda lavori e un range di costo. La inviamo alle imprese della tua zona.",
+  },
+  {
+    title: "Scegli l'impresa",
+    desc: "Ricevi le risposte (interessato, sopralluogo, ecc.) e contatta in autonomia l'impresa che preferisci.",
+  },
 ];
 
-const COME_FUNZIONA_IMPRESA = [
-  "Registrati e indica zona di intervento e categorie di lavoro.",
-  "Ricevi le richieste compatibili con il tuo profilo.",
-  "Per ogni richiesta: vedi scheda, budget e localizzazione.",
-  "Rispondi: interessato, richiedi sopralluogo o rifiuta.",
+const COME_FUNZIONA_IMPRESA_STEPS = [
+  {
+    title: "Registrati",
+    desc: "Compila il profilo con zona, raggio e categorie di lavoro che offri.",
+  },
+  {
+    title: "Ricevi le richieste",
+    desc: "Le richieste compatibili con il tuo profilo arrivano nella tua area riservata, con scheda e budget.",
+  },
+  {
+    title: "Rispondi e contatta",
+    desc: "Interessato, richiedi sopralluogo o rifiuta. Contatta i clienti in autonomia.",
+  },
 ];
 
 /** Slide del banner destro: ogni slide ha sfondo + messaggio su come funziona */
@@ -56,14 +73,22 @@ export default function HomePage() {
     return () => clearInterval(t);
   }, []);
 
+  const scrollToComeFunziona = () => {
+    document.getElementById("come-funziona")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const noiseStyle = {
+    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+  };
+
   return (
     <main className="flex min-h-screen flex-col">
-      {/* Header globale: logo a sinistra, Login a destra (visibile sopra le immagini su desktop) */}
+      {/* Header globale */}
       <header className="flex w-full shrink-0 items-center justify-between border-b border-zinc-800/50 bg-[#0c0c0c] px-6 py-4 lg:absolute lg:left-0 lg:right-0 lg:z-20 lg:border-0 lg:bg-transparent">
         <div className="relative -ml-2 h-[2.5rem] w-auto sm:h-[3rem] sm:-ml-4">
           <Image
             src="/ed-logo.png"
-            alt="EDILIA"
+            alt="Edilia"
             width={200}
             height={64}
             className="h-full w-auto object-contain object-left"
@@ -71,14 +96,15 @@ export default function HomePage() {
           />
         </div>
         <div className="flex items-center gap-6">
-          <Link
-            href="/come-funziona"
+          <button
+            type="button"
+            onClick={scrollToComeFunziona}
             className="text-sm font-medium text-[#E0B420] underline-offset-2 transition hover:text-amber-400 hover:underline"
           >
             Come funziona
-          </Link>
+          </button>
           <Link
-            href="/login"
+            href="/impresa/login"
             className="text-sm font-medium text-[#E0B420] underline-offset-2 transition hover:text-amber-400 hover:underline"
           >
             Login
@@ -86,129 +112,16 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Contenuto: pannello sinistro + area banner */}
-      <div className="flex flex-1 pt-0 lg:pt-16">
-      {/* Pannello sinistro: contenuto (stile WeTransfer) */}
-      <div className="relative flex w-full flex-col bg-[#0c0c0c] text-zinc-100 lg:max-w-[480px] lg:shrink-0">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-amber-950/10 via-transparent to-transparent" />
-
-        <div className="relative flex-1 overflow-y-auto px-6 py-8 sm:py-10">
-          <div className="mx-auto max-w-md">
-            <p className="text-xl font-medium leading-relaxed text-zinc-200 sm:text-2xl">
-              Trasformiamo quello che vuoi fare in una richiesta che le imprese capiscono.
-            </p>
-            <p className="mt-2 text-base text-zinc-500">
-              Gratuito. In pochi minuti.
-            </p>
-          </div>
-
-          <div className="mx-auto mt-12 max-w-md grid gap-5 sm:grid-cols-2 sm:items-stretch lg:grid-cols-1">
-            <Link
-              href="/cliente/nuova-richiesta"
-              className="group relative flex min-h-[200px] flex-col rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 transition-all duration-300 hover:border-amber-500/50 hover:bg-zinc-900 hover:shadow-[0_0_40px_-12px_rgba(245,158,11,0.25)]"
-            >
-              <span className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-500">
-                Sei un cliente?
-              </span>
-              <span className="mt-3 text-xl font-semibold tracking-tight text-zinc-100 transition group-hover:text-amber-400">
-                Fai la tua richiesta
-              </span>
-              <span className="mt-2 flex-1 text-sm leading-relaxed text-zinc-500">
-                Descrivi cosa vuoi fare, completa il questionario e invia alle imprese.
-              </span>
-              <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#E0B420] transition group-hover:gap-3">
-                Inizia
-                <span className="transition group-hover:translate-x-0.5">→</span>
-              </span>
-            </Link>
-
-            <Link
-              href="/impresa/registrati"
-              className="group relative flex min-h-[200px] flex-col rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 transition-all duration-300 hover:border-amber-500/50 hover:bg-zinc-900 hover:shadow-[0_0_40px_-12px_rgba(245,158,11,0.25)]"
-            >
-              <span className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-500">
-                Sei un&apos;impresa?
-              </span>
-              <span className="mt-3 text-xl font-semibold tracking-tight text-zinc-100 transition group-hover:text-amber-400">
-                Registrati
-              </span>
-              <span className="mt-2 flex-1 text-sm leading-relaxed text-zinc-500">
-                Crea il tuo profilo, indica zona e categorie, ricevi richieste compatibili e trova nuovi clienti.
-              </span>
-              <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#E0B420] transition group-hover:gap-3">
-                Registrati
-                <span className="transition group-hover:translate-x-0.5">→</span>
-              </span>
-            </Link>
-          </div>
-
-          <section className="mx-auto mt-16 max-w-md">
-            <h2 className="text-lg font-semibold tracking-tight text-zinc-200">
-              Come funziona
-            </h2>
-            <div className="mt-4 flex gap-2">
-              <button
-                type="button"
-                onClick={() => setComeFunzionaRuolo("cliente")}
-                className={`rounded-xl border px-4 py-2.5 text-sm font-medium transition ${
-                  comeFunzionaRuolo === "cliente"
-                    ? "border-[#E0B420] bg-[#E0B420]/10 text-[#E0B420]"
-                    : "border-zinc-700 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300"
-                }`}
-              >
-                Cliente
-              </button>
-              <button
-                type="button"
-                onClick={() => setComeFunzionaRuolo("impresa")}
-                className={`rounded-xl border px-4 py-2.5 text-sm font-medium transition ${
-                  comeFunzionaRuolo === "impresa"
-                    ? "border-[#E0B420] bg-[#E0B420]/10 text-[#E0B420]"
-                    : "border-zinc-700 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300"
-                }`}
-              >
-                Impresa
-              </button>
-            </div>
-            <ol className="mt-6 space-y-4 rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6">
-              {(comeFunzionaRuolo === "cliente" ? COME_FUNZIONA_CLIENTE : COME_FUNZIONA_IMPRESA).map(
-                (step, i) => (
-                  <li key={i} className="flex gap-4 text-sm text-zinc-300">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#E0B420]/20 text-xs font-semibold text-[#E0B420]">
-                      {i + 1}
-                    </span>
-                    <span className="pt-0.5">{step}</span>
-                  </li>
-                )
-              )}
-            </ol>
-          </section>
-
-          <button
-            type="button"
-            onClick={() => setAiutoOpen(true)}
-            className="mx-auto mt-12 block text-sm text-[#E0B420] underline underline-offset-2 transition hover:text-amber-400"
-          >
-            Hai bisogno di aiuto?
-          </button>
-        </div>
-      </div>
-
-      {/* Area destra: banner rotanti con messaggi su come funziona */}
-      <div className="relative hidden min-h-screen flex-1 lg:block">
+      {/* Sezione 1: Hero full-screen — BG = banner a tutta pagina, due card CENTRALI sopra (stile WeTransfer) */}
+      <section className="relative min-h-screen w-full pt-0 lg:pt-16">
+        {/* Background: banner a tutta larghezza (spazio ad/bg visibile ovunque) */}
         {BANNER_SLIDES.map((slide, i) => (
           <div
             key={i}
             className="absolute inset-0 transition-opacity duration-700 ease-in-out"
             style={{
               opacity: i === bannerIndex ? 1 : 0,
-              zIndex: i === bannerIndex ? 1 : 0,
+              zIndex: 0,
             }}
           >
             <img
@@ -217,24 +130,155 @@ export default function HomePage() {
               className="h-full w-full object-cover"
               role="presentation"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0c0c0c]/50 via-[#0c0c0c]/40 to-[#0c0c0c]/50" />
-            <div className="absolute inset-0 flex items-center justify-center px-8 lg:px-16">
-              <div className="max-w-lg text-center">
-                <h2
-                  className="text-2xl font-semibold leading-tight text-white drop-shadow-lg lg:text-3xl"
-                  style={{ fontFamily: "var(--font-syne)" }}
-                >
-                  {slide.title}
-                </h2>
-                <p className="mt-3 text-base leading-relaxed text-zinc-300 drop-shadow-md lg:text-lg">
-                  {slide.subtitle}
-                </p>
-              </div>
-            </div>
+            <div className="absolute inset-0 bg-black/30" />
           </div>
         ))}
-      </div>
-      </div>
+
+        {/* Contenuto centrale: slogan più in alto, stile Linear (pulito, sicuro, calmo) + modali */}
+        <div className="relative z-10 flex min-h-[calc(100vh-5rem)] flex-col items-center justify-center px-4 pt-4 lg:min-h-[100vh] lg:justify-center">
+          <div className="-mt-20 flex flex-col items-center lg:-mt-28">
+            <p className="max-w-2xl text-center text-2xl font-semibold leading-snug text-white drop-shadow-md sm:text-3xl sm:leading-normal lg:text-4xl lg:tracking-tight xl:text-5xl" style={{ fontFamily: "var(--font-syne)" }}>
+              Da te all&apos;impresa giusta<br className="hidden sm:block" />
+              <span className="sm:ml-0">in pochi minuti.</span>
+            </p>
+            <p className="mt-5 text-center text-base font-medium tracking-wide text-white/95 sm:text-lg">
+              Semplice. Gratuito.
+            </p>
+
+            {/* Due card centrali — modali: glass, accento amber, ombra e hover premium */}
+            <div className="mx-auto mt-10 grid w-full max-w-md grid-cols-1 gap-4 sm:max-w-xl sm:grid-cols-2 sm:gap-6">
+            <Link
+              href="/cliente/nuova-richiesta"
+              className="group relative flex min-h-[180px] flex-col overflow-hidden rounded-2xl border border-white/25 bg-zinc-900/85 p-5 shadow-lg shadow-black/20 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/10 sm:min-h-[200px] sm:p-6"
+            >
+              <span className="absolute left-0 right-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-amber-500/60 to-transparent" aria-hidden />
+              <span className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-400">
+                Sei un cliente?
+              </span>
+              <span className="mt-3 text-xl font-semibold tracking-tight text-zinc-100 transition group-hover:text-amber-300 sm:text-2xl">
+                Fai la tua richiesta
+              </span>
+              <span className="mt-2 flex-1 text-sm leading-relaxed text-zinc-400">
+                Descrivi cosa vuoi fare, completa il questionario e invia alle imprese.
+              </span>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[#E0B420] transition group-hover:gap-3">
+                Inizia
+                <span className="transition group-hover:translate-x-0.5">→</span>
+              </span>
+            </Link>
+
+            <Link
+              href="/impresa/registrati"
+              className="group relative flex min-h-[180px] flex-col overflow-hidden rounded-2xl border border-white/25 bg-zinc-900/85 p-5 shadow-lg shadow-black/20 backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-amber-500/40 hover:shadow-xl hover:shadow-amber-500/10 sm:min-h-[200px] sm:p-6"
+            >
+              <span className="absolute left-0 right-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-amber-500/60 to-transparent" aria-hidden />
+              <span className="text-xs font-medium uppercase tracking-[0.2em] text-zinc-400">
+                Sei un&apos;impresa?
+              </span>
+              <span className="mt-3 text-xl font-semibold tracking-tight text-zinc-100 transition group-hover:text-amber-300 sm:text-2xl">
+                Registrati
+              </span>
+              <span className="mt-2 flex-1 text-sm leading-relaxed text-zinc-400">
+                Crea il tuo profilo, indica zona e categorie, ricevi richieste compatibili.
+              </span>
+              <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-[#E0B420] transition group-hover:gap-3">
+                Registrati
+                <span className="transition group-hover:translate-x-0.5">→</span>
+              </span>
+            </Link>
+          </div>
+          </div>
+
+          {/* Freccia scroll in basso — Come funziona (stile WeTransfer, ben visibile) */}
+          <div className="absolute bottom-16 left-0 right-0 flex flex-col items-center gap-2 lg:bottom-20">
+            <button
+              type="button"
+              onClick={scrollToComeFunziona}
+              className="flex flex-col items-center gap-1 text-white/70 transition hover:text-[#E0B420]"
+              aria-label="Scorri a Come funziona"
+            >
+              <span className="text-xs font-medium uppercase tracking-[0.2em]">Come funziona</span>
+              <svg className="h-6 w-6 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Sezione 2: Footer a tutta pagina — Come funziona (primo scroll = questa sezione) */}
+      <section
+        id="come-funziona"
+        className="relative flex min-h-screen flex-col justify-center border-t border-zinc-800/50 bg-[#0c0c0c] px-6 py-16 sm:py-20"
+      >
+        <div className="pointer-events-none absolute inset-0 opacity-[0.03]" style={noiseStyle} />
+        <div className="absolute inset-0 bg-gradient-to-b from-amber-950/10 via-transparent to-transparent" />
+
+        <div className="relative mx-auto w-full max-w-4xl">
+          <h2 className="text-center text-2xl font-semibold tracking-tight text-zinc-100 sm:text-3xl" style={{ fontFamily: "var(--font-syne)" }}>
+            Come funziona
+          </h2>
+          <p className="mt-2 text-center text-zinc-500 font-sans">
+            Scegli se sei un cliente o un&apos;impresa.
+          </p>
+
+          <div className="mt-8 flex justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => setComeFunzionaRuolo("cliente")}
+              className={`rounded-xl border px-4 py-2.5 text-sm font-medium transition ${
+                comeFunzionaRuolo === "cliente"
+                  ? "border-[#E0B420] bg-[#E0B420]/10 text-[#E0B420]"
+                  : "border-zinc-700 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300"
+              }`}
+            >
+              Cliente
+            </button>
+            <button
+              type="button"
+              onClick={() => setComeFunzionaRuolo("impresa")}
+              className={`rounded-xl border px-4 py-2.5 text-sm font-medium transition ${
+                comeFunzionaRuolo === "impresa"
+                  ? "border-[#E0B420] bg-[#E0B420]/10 text-[#E0B420]"
+                  : "border-zinc-700 text-zinc-500 hover:border-zinc-600 hover:text-zinc-300"
+              }`}
+            >
+              Impresa
+            </button>
+          </div>
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-3">
+            {(comeFunzionaRuolo === "cliente" ? COME_FUNZIONA_CLIENTE_STEPS : COME_FUNZIONA_IMPRESA_STEPS).map(
+              (step, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 transition hover:border-amber-500/30"
+                >
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#E0B420]/20 text-lg font-semibold text-[#E0B420]">
+                    {i + 1}
+                  </span>
+                  <h3 className="mt-4 font-semibold tracking-tight text-zinc-100 font-sans">
+                    {step.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-zinc-400 font-sans">
+                    {step.desc}
+                  </p>
+                </div>
+              )
+            )}
+          </div>
+
+          <div className="mt-12 flex justify-center">
+            <button
+              type="button"
+              onClick={() => setAiutoOpen(true)}
+              className="text-sm text-[#E0B420] underline underline-offset-2 transition hover:text-amber-400"
+            >
+              Hai bisogno di aiuto?
+            </button>
+          </div>
+        </div>
+      </section>
 
       {/* Modale Aiuto */}
       {aiutoOpen && (

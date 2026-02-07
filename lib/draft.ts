@@ -4,12 +4,18 @@ export const DRAFT_KEY = "edil-draft";
 export interface DraftRichiesta {
   descrizioneIniziale: string;
   localizzazione: string;
+  /** Email obbligatoria per inviare la richiesta */
+  email?: string;
+  /** Consenso trattamento dati (obbligatorio per invio) */
+  privacyConsent?: boolean;
+  /** Iscrizione newsletter (opzionale) */
+  newsletterConsent?: boolean;
   budgetMassimo?: number;
   fotoNote?: string;
   /** URL delle foto (data URL base64 o URL dopo upload) */
   photoUrls?: string[];
   startedAt: string;
-  /** Risposte flow: ambienti, metratura_min, metratura_max, stato, finitura */
+  /** Risposte flow: ambienti, metratura_min, metratura_max, stato */
   answers: Record<string, string>;
 }
 

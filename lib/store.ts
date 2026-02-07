@@ -62,6 +62,44 @@ export function getImpresaById(id: string): ProfiloImpresa | undefined {
   return imprese.find((i) => i.id === id);
 }
 
+export function getImpresaByEmail(email: string): ProfiloImpresa | undefined {
+  return imprese.find((i) => i.email.toLowerCase() === email.toLowerCase());
+}
+
+export function addImpresa(
+  r: Omit<ProfiloImpresa, "id" | "createdAt" | "updatedAt">
+): ProfiloImpresa {
+  const id = `impresa-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  const now = new Date().toISOString();
+  const nuova: ProfiloImpresa = {
+    ...r,
+    id,
+    createdAt: now,
+    updatedAt: now,
+  };
+  imprese.push(nuova);
+  return nuova;
+}
+
+export function setStatoImpresa(id: string, stato: ProfiloImpresa["stato"]): ProfiloImpresa | undefined {
+  const i = imprese.find((x) => x.id === id);
+  if (!i) return undefined;
+  i.stato = stato;
+  i.updatedAt = new Date().toISOString();
+  return i;
+}
+
+export function setDocumentiImpresa(
+  id: string,
+  documenti: ProfiloImpresa["documenti"]
+): ProfiloImpresa | undefined {
+  const i = imprese.find((x) => x.id === id);
+  if (!i) return undefined;
+  i.documenti = documenti;
+  i.updatedAt = new Date().toISOString();
+  return i;
+}
+
 export function getAssegnazioni(): AssegnazioneRichiesta[] {
   return [...assegnazioni];
 }

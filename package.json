@@ -2,16 +2,16 @@
   "name": "edil-ai",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": ">=18"
-  },
+  "engines": { "node": ">=18" },
   "scripts": {
+    "predev": "rm -rf .next/dev/lock 2>/dev/null; (lsof -ti:3000 | xargs kill -9) 2>/dev/null; pkill -f 'next dev' 2>/dev/null; true",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.37.3",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"

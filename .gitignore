@@ -11,6 +11,10 @@ build/
 # Env
 .env
 .env.*
+!.env.example
+
+# Upload documenti imprese (salvati in locale in dev)
+uploads/
 
 # OS
 .DS_Store
@@ -27,3 +31,6 @@ build/
 # TypeScript
 next-env.d.ts
 *.tsbuildinfo
+
+# clerk configuration (can include secrets)
+/.clerk/

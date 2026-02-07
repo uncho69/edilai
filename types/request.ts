@@ -70,6 +70,10 @@ export type StatoRichiesta =
 export interface RichiestaLavori {
   id: string;
   userId: string;
+  /** Email richiedente (obbligatoria per invio) */
+  email?: string;
+  /** Consenso newsletter */
+  newsletterConsent?: boolean;
   /** CAP o città */
   localizzazione: string;
   /** Testo libero iniziale */

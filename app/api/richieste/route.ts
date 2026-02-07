@@ -17,6 +17,8 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const {
       userId = "demo-user",
+      email,
+      newsletterConsent,
       localizzazione,
       descrizioneIniziale,
       budgetMassimo,
@@ -26,6 +28,8 @@ export async function POST(request: NextRequest) {
       startedAt,
     } = body as {
       userId?: string;
+      email?: string;
+      newsletterConsent?: boolean;
       localizzazione: string;
       descrizioneIniziale: string;
       budgetMassimo?: number;
@@ -45,6 +49,8 @@ export async function POST(request: NextRequest) {
     const now = new Date().toISOString();
     const richiesta = addRichiesta({
       userId,
+      email: email?.trim() || undefined,
+      newsletterConsent: newsletterConsent ?? false,
       localizzazione: localizzazione || "Non indicata",
       descrizioneIniziale,
       budgetMassimo,

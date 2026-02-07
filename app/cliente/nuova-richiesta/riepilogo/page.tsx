@@ -54,6 +54,14 @@ export default function RiepilogoPage() {
 
   const handleConfermaInvia = async () => {
     if (!draft || !output) return;
+    if (!draft.email?.trim()) {
+      setErrore("Inserisci la tua email nella pagina iniziale per inviare la richiesta.");
+      return;
+    }
+    if (!draft.privacyConsent) {
+      setErrore("È necessario acconsentire al trattamento dei dati per inviare la richiesta.");
+      return;
+    }
     setInvio(true);
     setErrore(null);
     try {
@@ -62,6 +70,8 @@ export default function RiepilogoPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId: "demo-user",
+          email: draft.email.trim(),
+          newsletterConsent: draft.newsletterConsent ?? false,
           localizzazione: draft.localizzazione || "Non indicata",
           descrizioneIniziale: draft.descrizioneIniziale,
           budgetMassimo: draft.budgetMassimo,
@@ -117,6 +127,7 @@ export default function RiepilogoPage() {
           <h2 className="text-sm font-medium text-zinc-500">La tua descrizione</h2>
           <p className="mt-2 text-zinc-200">{draft.descrizioneIniziale}</p>
           <p className="mt-1 text-xs text-zinc-500">Localizzazione: {draft.localizzazione}</p>
+          {draft.email && <p className="mt-1 text-xs text-zinc-500">Email: {draft.email}</p>}
         </section>
         <section>
           <h2 className="text-sm font-medium text-zinc-500">Lavorazioni previste</h2>
@@ -150,7 +161,16 @@ export default function RiepilogoPage() {
         </div>
       </div>
 
-      {errore && <p className="mt-4 text-sm text-amber-400">{errore}</p>}
+      {errore && (
+        <div className="mt-4">
+          <p className="text-sm text-amber-400">{errore}</p>
+          {(!draft?.email?.trim() || !draft?.privacyConsent) && (
+            <Link href="/cliente/nuova-richiesta" className="mt-2 inline-block text-sm text-[#E0B420] hover:underline">
+              Torna alla pagina iniziale per inserire email e consensi →
+            </Link>
+          )}
+        </div>
+      )}
 
       <div className="mt-8 flex flex-wrap gap-4">
         <button

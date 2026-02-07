@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { getImpresaSession, clearImpresaSession } from "@/lib/impresa-session";
+import { SignOutButton } from "@clerk/nextjs";
 
 interface AssegnazioneConRichiesta {
   id: string;
@@ -66,32 +66,37 @@ export default function DashboardImpresaPage() {
   const [authOk, setAuthOk] = useState(false);
   const [rispostaInvio, setRispostaInvio] = useState<Record<string, boolean>>({});
 
-  // Verifica accesso: solo imprese con stato "attiva" possono entrare
+  // Verifica accesso: /api/imprese/me restituisce l'impresa legata all'email Clerk
   useEffect(() => {
-    const id = getImpresaSession();
-    if (!id) {
-      router.replace("/impresa/login");
-      return;
-    }
-    fetch(`/api/imprese/${id}`)
+    fetch("/api/imprese/me")
       .then((r) => {
-        if (!r.ok) throw new Error("Impresa non trovata");
+        if (r.status === 401) {
+          router.replace("/impresa/login");
+          return null;
+        }
+        if (r.status === 403) {
+          return r.json().then((body) => {
+            if (body?.code === "in_revisione") {
+              router.replace("/impresa/in-revisione");
+              return null;
+            }
+            router.replace("/impresa/login");
+            return null;
+          });
+        }
+        if (!r.ok) {
+          router.replace("/impresa/login");
+          return null;
+        }
         return r.json();
       })
-      .then((data: Impresa) => {
-        if (data.stato !== "attiva") {
-          clearImpresaSession();
-          router.replace("/impresa/login");
-          return;
-        }
+      .then((data: Impresa | null) => {
+        if (!data) return;
         setImpresa(data);
         setImpresaSelezionata(data.id);
         setAuthOk(true);
       })
-      .catch(() => {
-        clearImpresaSession();
-        router.replace("/impresa/login");
-      });
+      .catch(() => router.replace("/impresa/login"));
   }, [router]);
 
   useEffect(() => {
@@ -129,11 +134,6 @@ export default function DashboardImpresaPage() {
   const daRispondere = richieste.filter((r) => !r.risposta);
   const risposte = richieste.filter((r) => r.risposta);
 
-  const handleEsci = () => {
-    clearImpresaSession();
-    router.replace("/impresa/login");
-  };
-
   if (!authOk && !impresa) {
     return (
       <div className="flex min-h-[40vh] items-center justify-center">
@@ -165,13 +165,14 @@ export default function DashboardImpresaPage() {
             )}
           </p>
         </div>
-        <button
-          type="button"
-          onClick={handleEsci}
-          className="shrink-0 rounded-xl border border-zinc-600 px-4 py-2.5 text-sm font-medium text-zinc-400 transition hover:bg-zinc-800 hover:text-zinc-300"
-        >
-          Esci
-        </button>
+        <SignOutButton signOutCallback={() => router.push("/impresa/login")}>
+          <button
+            type="button"
+            className="shrink-0 rounded-xl border border-zinc-600 px-4 py-2.5 text-sm font-medium text-zinc-400 transition hover:bg-zinc-800 hover:text-zinc-300"
+          >
+            Esci
+          </button>
+        </SignOutButton>
       </div>
 
       {loading ? (

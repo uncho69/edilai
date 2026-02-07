@@ -19,9 +19,8 @@ const STEPS = [
     title: "Stato attuale",
     type: "select",
     options: [
-      { value: "nuovo", label: "Nuovo / da rifare da zero" },
-      { value: "vecchio", label: "Vecchio, da rinnovare" },
-      { value: "da_demolire", label: "Da demolire / sgomberare" },
+      { value: "nuovo", label: "Partire da zero (nuova costruzione)" },
+      { value: "vecchio", label: "Ristrutturazione" },
     ],
   },
 ];

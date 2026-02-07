@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono, Syne } from "next/font/google";
 import "./globals.css";
+import AssistenteVirtuale from "./components/AssistenteVirtuale";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +21,7 @@ const syne = Syne({
 });
 
 export const metadata: Metadata = {
-  title: "EDILIA — Struttura la tua richiesta di lavori",
+  title: "Edilia — Struttura la tua richiesta di lavori",
   description:
     "Descrivi cosa vuoi fare in parole tue. Ti guidiamo passo passo fino a una scheda lavori chiara e a un range di costo stimato.",
 };
@@ -30,12 +32,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="it">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${syne.variable} font-sans antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="it">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} ${syne.variable} font-sans antialiased`}
+        >
+          {children}
+          <AssistenteVirtuale />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

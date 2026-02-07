@@ -34,6 +34,9 @@ export default function NuovaRichiestaPage() {
   const [budget, setBudget] = useState<number | "">("");
   const [fotoNote, setFotoNote] = useState("");
   const [photoUrls, setPhotoUrls] = useState<string[]>([]);
+  const [email, setEmail] = useState("");
+  const [privacyConsent, setPrivacyConsent] = useState(false);
+  const [newsletterConsent, setNewsletterConsent] = useState(false);
 
   useEffect(() => {
     const d = getDraft();
@@ -43,6 +46,9 @@ export default function NuovaRichiestaPage() {
       setBudget(d.budgetMassimo ?? "");
       setFotoNote(d.fotoNote ?? "");
       setPhotoUrls(d.photoUrls ?? []);
+      setEmail(d.email ?? "");
+      setPrivacyConsent(d.privacyConsent ?? false);
+      setNewsletterConsent(d.newsletterConsent ?? false);
     }
   }, []);
 
@@ -75,6 +81,9 @@ export default function NuovaRichiestaPage() {
     setDraft({
       descrizioneIniziale: descrizione,
       localizzazione: localizzazione || "Non indicata",
+      email: email.trim() || undefined,
+      privacyConsent: privacyConsent || undefined,
+      newsletterConsent: newsletterConsent || undefined,
       budgetMassimo: budget === "" ? undefined : Number(budget),
       fotoNote: fotoNote || undefined,
       photoUrls: photoUrls.length ? photoUrls : undefined,
@@ -198,6 +207,48 @@ export default function NuovaRichiestaPage() {
             value={localizzazione}
             onChange={(e) => setLocalizzazione(e.target.value)}
           />
+        </div>
+
+        <div>
+          <label htmlFor="email" className={labelClass}>
+            Email <span className="text-amber-400">*</span>
+          </label>
+          <input
+            id="email"
+            type="email"
+            className={`mt-2 ${inputClass}`}
+            placeholder="la-tua@email.it"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <p className="mt-1 text-xs text-zinc-500">Necessaria per inviare la richiesta e ricevere risposte dalle imprese.</p>
+        </div>
+
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-4">
+          <label className="flex cursor-pointer items-start gap-3">
+            <input
+              type="checkbox"
+              checked={privacyConsent}
+              onChange={(e) => setPrivacyConsent(e.target.checked)}
+              className="mt-1 h-4 w-4 rounded border-zinc-600 bg-zinc-800 text-amber-500 focus:ring-amber-500/50"
+              required
+            />
+            <span className="text-sm text-zinc-300">
+              Acconsento al trattamento dei miei dati personali per la gestione della richiesta e per essere contattato dalle imprese. <span className="text-amber-400">*</span>
+            </span>
+          </label>
+          <label className="mt-3 flex cursor-pointer items-start gap-3">
+            <input
+              type="checkbox"
+              checked={newsletterConsent}
+              onChange={(e) => setNewsletterConsent(e.target.checked)}
+              className="mt-1 h-4 w-4 rounded border-zinc-600 bg-zinc-800 text-amber-500 focus:ring-amber-500/50"
+            />
+            <span className="text-sm text-zinc-300">
+              Iscrivimi alla newsletter per aggiornamenti e consigli.
+            </span>
+          </label>
         </div>
 
         <div>
