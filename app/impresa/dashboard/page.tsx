@@ -165,7 +165,7 @@ export default function DashboardImpresaPage() {
             )}
           </p>
         </div>
-        <SignOutButton signOutCallback={() => router.push("/impresa/login")}>
+        <SignOutButton signOutOptions={{ redirectUrl: "/impresa/login" }}>
           <button
             type="button"
             className="shrink-0 rounded-xl border border-zinc-600 px-4 py-2.5 text-sm font-medium text-zinc-400 transition hover:bg-zinc-800 hover:text-zinc-300"
